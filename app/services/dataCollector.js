@@ -7,6 +7,7 @@
  */
 var NodeRestClient = require('./nodeRestClient');
 var NodeRepository = require('../repositories/nodeRepository.js');
+var async = require('async');
 
 /**
  * DataCollector constructor
@@ -33,7 +34,6 @@ DataCollector.prototype.init = function() {
 
 	self.nodeRepository.findAll(function(nodes) {
 		self.nodes = nodes;
-		console.log("current nodes: " + self.nodes);
 	});
 };
 
@@ -52,7 +52,7 @@ DataCollector.prototype.updateSensors = function() {
 		}
 		
 		self.nodeRestClient.getSensors(node.url, function(sensors) {
-			
+			node.updateSensors(sensors);
 		});
 	});
 };

@@ -8,6 +8,7 @@
  */
 var config = require('config');
 var nano = require('nano')('http://' + config.dbConfig.host + ':' + config.dbConfig.port);
+var Node = require('../models/node.js');
 
 /**
  * NodeRepository constructor
@@ -25,13 +26,20 @@ function NodeRepository() {
  */
 NodeRepository.prototype.findAll = function(callback) {
 	this.db.list(function(err, body) {
+		var nodes = [];
+
 		if (err) {
 			console.log(err);
-			return [];
+			return nodes;
 		}
 		
+		body.rows.forEach(function(nodeDto) {
+			var node = new Node(nodeDto);
+			nodes.push(node);
+		});
+		
 		if (!callback){
-			return body.rows;
+			return nodes;
 		}
 		
 		callback(body.rows);

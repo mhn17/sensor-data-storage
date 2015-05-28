@@ -3,11 +3,6 @@
  */
 
 /**
- * Dependencies
- */
-var async = require('async');
-
-/**
  * Node constructor
  * 
  * @param {Object} nodeDto A node DTO which is mapped to this model
@@ -38,7 +33,7 @@ Node.prototype.updateSensors = function(sensors) {
 		
 		// if sensor already exists, replace it
 		for (var i=0; i<self.sensors.length; i++) {
-			if (sensor.id == self.sensors[i].id) {
+			if (sensor.id === self.sensors[i].id) {
 				self.sensors[i] = sensor;
 				replaced = true;
 				
@@ -46,7 +41,7 @@ Node.prototype.updateSensors = function(sensors) {
 			}
 		}
 		
-		if (replaced == false) {
+		if (replaced === false) {
 			self.sensors.push(sensor);
 		}
 	});
