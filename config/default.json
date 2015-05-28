@@ -1,0 +1,8 @@
+{
+	// CouchDB
+	"dbConfig": {
+		"host": "localhost",
+		"port": 5984,
+		"dbName": "sensor_data_storage"
+	}
+}
