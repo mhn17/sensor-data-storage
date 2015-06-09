@@ -4,3 +4,4 @@
 .tern-project
 bin/
 node_modules/
+.idea
