@@ -19,17 +19,7 @@
             {
                 "id": "123456789",
                 "name": "node1",
-                "url": "http://localhost",
-                "sensors": [
-                    {
-                        "rel": "self",
-                        "href": "http://host/nodes/123456789/sensors/1"
-                    },
-                    {
-                        "rel": "self",
-                        "href": "http://host/nodes/123456789/sensors/2"
-                    }
-                ]
+                "url": "http://localhost"
             }
         ]
 
@@ -40,17 +30,7 @@
             {
                 "id": "123456789",
                 "name": "node1",
-                "url": "http://localhost",
-                "sensors": [
-                    {
-                        "rel": "self",
-                        "href": "http://host/nodes/123456789/sensors/1"
-                    },
-                    {
-                        "rel": "self",
-                        "href": "http://host/nodes/123456789/sensors/2"
-                    }
-                ]
+                "url": "http://localhost"
             }
         ]
 
