@@ -34,6 +34,7 @@ DataCollector.prototype.init = function() {
 
 	self.nodeRepository.findAll(function(nodes) {
 		self.nodes = nodes;
+		self.updateSensors();
 	});
 };
 
@@ -46,16 +47,25 @@ DataCollector.prototype.init = function() {
 DataCollector.prototype.updateSensors = function() {
 	var self = this;
 	
-	async.each(this.nodes,function(node) {
+	async.each(this.nodes,function(node, callback) {
 		if (!Array.isArray(node.sensors)) {
 			node.sensors = [];
 		}
 		
-		self.nodeRestClient.getSensors(node.url, function(sensors) {
+		self.sensorNodeClient.getSensors(node.url, function(sensors) {
 			node.updateSensors(sensors);
+			callback();
 		});
+	}, function(err) {
+		if (err) {
+			console.log('error: ' + err);
+		} else {
+			console.log(self.nodes);			
+		}
 	});
 };
+
+
 
 /**
  * Module exports

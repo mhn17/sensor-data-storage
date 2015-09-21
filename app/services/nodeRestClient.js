@@ -5,14 +5,15 @@
 /**
  * Dependencies
  */
-var restClient = require('node-rest-client').Client;
+var RestClient = require('node-rest-client').Client;
 var util = require('util');
 
 /**
  * DataCollector constructor
  */
 function NodeRestClient() {
-	var httpArgs = {
+	this.restClient = new RestClient();
+	this.httpArgs = {
 			"headers": {}
 	};
 }

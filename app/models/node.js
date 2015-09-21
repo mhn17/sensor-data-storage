@@ -8,7 +8,7 @@
  * @param {Object} nodeDto A node DTO which is mapped to this model
  */
 function Node(nodeDto) {
-	this.id = nodeDto.id;
+	this.id = nodeDto._id;
 	this.name = nodeDto.name;
 	this.url = nodeDto.url;
 	

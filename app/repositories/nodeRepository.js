@@ -25,16 +25,17 @@ function NodeRepository() {
  * @api public
  */
 NodeRepository.prototype.findAll = function(callback) {
-	this.db.list(function(err, body) {
+	this.db.view('nodes', 'all', {'include_docs':true}, function(err, body) {
 		var nodes = [];
 
 		if (err) {
-			console.log(err);
+			console.log('error_' + err);
 			return nodes;
 		}
 		
-		body.rows.forEach(function(nodeDto) {
-			var node = new Node(nodeDto);
+		body.rows.forEach(function(row) {
+			var node = new Node(row.doc);
+			console.log(node);
 			nodes.push(node);
 		});
 		
@@ -42,14 +43,14 @@ NodeRepository.prototype.findAll = function(callback) {
 			return nodes;
 		}
 		
-		callback(body.rows);
+		callback(nodes);
 	});
 };
 
 /**
  * Add a new node
  * 
- * @param {Object} The node object to save
+ * @param {Object} node The node object to save
  * @param {function()} [callback] Optional callback function
  * @api public
  */

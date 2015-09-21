@@ -1,11 +1,13 @@
-
-
 # SensorDataStorage
 
 
-
 ## Usage
-
+### CouchDB
+1. create DB called "sensor_data_storage"
+2. add node document with following structure:
+    type: "node"
+    name
+    url
 
 ##REST API
 **Version: 0.1**  
