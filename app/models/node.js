@@ -3,23 +3,28 @@
  */
 
 /**
+ * Dependencies
+ */
+var Sensor = require('./sensor');
+
+/**
  * Node constructor
  * 
  * @param {Object} nodeDto A node DTO which is mapped to this model
  */
 function Node(nodeDto) {
-	console.log(nodeDto);
 	this._id = nodeDto._id;
 	this._rev = nodeDto._rev;
 	this.type = nodeDto.type;
 	this.name = nodeDto.name;
 	this.url = nodeDto.url;
+	this.sensors = [];
 	
-	if (!Array.isArray(nodeDto.sensors)) {
-		this.sensors = [];
-	}
-	else {
-		this.sensors = nodeDto.sensors;
+	if (Array.isArray(nodeDto.sensors)) {
+		var self = this;
+		nodeDto.sensors.forEach(function(sensorDto) {
+			self.sensors.push(new Sensor(sensorDto));
+		});
 	}
 }
 
@@ -69,12 +74,13 @@ Node.prototype.updateSensors = function(sensors) {
 	var self = this;
 		
 	// iterate over new sensors and update the node's sensor array
-	sensors.forEach(function(sensor) {
+	sensors.forEach(function(sensorDto) {
+		var sensor = new Sensor(sensorDto);
 		var replaced = false;
 		
 		// if sensor already exists, replace it
 		for (var i=0; i<self.sensors.length; i++) {
-			if (sensor.id === self.sensors[i].id) {
+			if (sensor.getId() === self.sensors[i].getId()) {
 				self.sensors[i] = sensor;
 				replaced = true;
 				

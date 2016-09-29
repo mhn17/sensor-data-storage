@@ -2,7 +2,6 @@
  * app/repositories/nodeRepository.js
  */
 
-
 /**
  * Dependencies
  */
@@ -35,7 +34,6 @@ NodeRepository.prototype.findAll = function(callback) {
 		
 		body.rows.forEach(function(row) {
 			var node = new Node(row.doc);
-			console.log(node);
 			nodes.push(node);
 		});
 		

@@ -58,7 +58,6 @@ DataCollector.prototype.updateSensors = function() {
 			console.log('error: ' + err);
 		} else {
 			self.nodes.forEach(function(node) {
-				console.log(node);
 				self.nodeRepository.update(node, function() {
 					console.log('node "' + node.getName() + '" upated');
 				});
