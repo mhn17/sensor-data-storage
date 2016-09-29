@@ -19,9 +19,6 @@ function DataCollector() {
 	this.nodes = [];
 	this.sensors = [];
 	this.collectingData = false;
-	
-	// set nodes and sensors
-	this.init();
 }
 
 /**
@@ -29,7 +26,7 @@ function DataCollector() {
  * 
  * @api private
  */
-DataCollector.prototype.init = function() {
+DataCollector.prototype.start = function() {
 	var self = this;
 
 	self.nodeRepository.findAll(function(nodes) {
@@ -47,7 +44,7 @@ DataCollector.prototype.init = function() {
 DataCollector.prototype.updateSensors = function() {
 	var self = this;
 	
-	async.each(this.nodes,function(node, callback) {
+	async.each(this.nodes, function(node, callback) {
 		if (!Array.isArray(node.sensors)) {
 			node.sensors = [];
 		}
@@ -60,12 +57,12 @@ DataCollector.prototype.updateSensors = function() {
 		if (err) {
 			console.log('error: ' + err);
 		} else {
-			console.log(self.nodes);			
+			self.nodes.forEach(function(node) {
+				console.log(node);
+			});
 		}
 	});
 };
-
-
 
 /**
  * Module exports

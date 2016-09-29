@@ -4,4 +4,6 @@
 .tern-project
 bin/
 node_modules/
-.idea
+/nbproject/
+.idea/
+/config/default.json

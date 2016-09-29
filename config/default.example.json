@@ -1,5 +1,4 @@
 {
-	// CouchDB
 	"dbConfig": {
 		"host": "localhost",
 		"port": 5984,

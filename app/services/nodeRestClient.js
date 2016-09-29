@@ -9,7 +9,7 @@ var RestClient = require('node-rest-client').Client;
 var util = require('util');
 
 /**
- * DataCollector constructor
+ * NodeRestClient constructor
  */
 function NodeRestClient() {
 	this.restClient = new RestClient();

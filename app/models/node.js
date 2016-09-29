@@ -21,8 +21,19 @@ function Node(nodeDto) {
 }
 
 /**
+ * Return the list of sensors
+ * 
+ * @returns {Array}
+ */
+Node.prototype.getSensors = function() {
+	return this.sensors;
+}
+
+/**
  * Update sensors for a node. Only new sensors are added and existing sensors are updated.
  * No sensors are deleted because they are needed for existing sensor data
+ * 
+ * @param {Array} sensors A new list of sensors
  */
 Node.prototype.updateSensors = function(sensors) {
 	var self = this;

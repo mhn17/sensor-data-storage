@@ -4,6 +4,7 @@
 //=============================================================================
 var DataCollector = require('./app/services/dataCollector');
 var dataCollector = new DataCollector();
+dataCollector.start();
 
 //// set up job for regular updates of the sensor data
 //var schedule = require('node-schedule');
