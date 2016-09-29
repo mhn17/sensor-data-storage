@@ -8,7 +8,10 @@
  * @param {Object} nodeDto A node DTO which is mapped to this model
  */
 function Node(nodeDto) {
-	this.id = nodeDto._id;
+	console.log(nodeDto);
+	this._id = nodeDto._id;
+	this._rev = nodeDto._rev;
+	this.type = nodeDto.type;
 	this.name = nodeDto.name;
 	this.url = nodeDto.url;
 	
@@ -21,13 +24,40 @@ function Node(nodeDto) {
 }
 
 /**
+ * Return the node ID
+ * 
+ * @returns {String}
+ */
+Node.prototype.getId = function() {
+	return this._id;
+};
+
+/**
+ * Return the node name
+ * 
+ * @returns {String}
+ */
+Node.prototype.getName = function () {
+	return this.name;
+};
+
+/**
+ * Return the node URL
+ * 
+ * @returns {String}
+ */
+Node.prototype.getUrl = function () {
+	return this.url;
+};
+
+/**
  * Return the list of sensors
  * 
  * @returns {Array}
  */
 Node.prototype.getSensors = function() {
 	return this.sensors;
-}
+};
 
 /**
  * Update sensors for a node. Only new sensors are added and existing sensors are updated.

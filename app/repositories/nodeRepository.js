@@ -69,6 +69,17 @@ NodeRepository.prototype.add = function(node, callback) {
 };
 
 /**
+ * 
+ * @param {Object} node The node to update
+ * @param {function()} [callback] Optional callback function
+ * @api public
+ */
+NodeRepository.prototype.update = function(node, callback) {
+	// use th add method to overwrite the existing node
+	this.add(node, callback);
+};
+
+/**
  * Module exports
  */
 module.exports = NodeRepository;

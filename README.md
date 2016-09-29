@@ -6,8 +6,9 @@
 1. create DB called "sensor_data_storage"
 2. add node document with following structure:
     type: "node"
-    name
-    url
+    name: <name-of-sensor>
+    url: <url-to-node>
+	sensors: <empty>
 
 ##REST API
 **Version: 0.1**  

@@ -29,7 +29,7 @@ function DataCollector() {
 DataCollector.prototype.start = function() {
 	var self = this;
 
-	self.nodeRepository.findAll(function(nodes) {
+	this.nodeRepository.findAll(function(nodes) {
 		self.nodes = nodes;
 		self.updateSensors();
 	});
@@ -59,6 +59,9 @@ DataCollector.prototype.updateSensors = function() {
 		} else {
 			self.nodes.forEach(function(node) {
 				console.log(node);
+				self.nodeRepository.update(node, function() {
+					console.log('node "' + node.getName() + '" upated');
+				});
 			});
 		}
 	});
