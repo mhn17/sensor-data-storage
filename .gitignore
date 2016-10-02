@@ -6,4 +6,3 @@ bin/
 node_modules/
 /nbproject/
 .idea/
-/config/default.json

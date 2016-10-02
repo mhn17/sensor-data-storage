@@ -19,7 +19,7 @@ function NodeRepository() {
 /**
  * Return all nodes with sensors
  * 
- * @param {function(nodes)} [callback] Optional callback function
+ * @param {function(nodes)} [callback] Callback function
  * @return {Array} nodes A list of nodes with their sensors
  * @api public
  */
@@ -29,18 +29,14 @@ NodeRepository.prototype.findAll = function(callback) {
 
 		if (err) {
 			console.log('error_' + err);
-			return nodes;
+			callback(err);
 		}
 		
 		body.rows.forEach(function(row) {
 			var node = new Node(row.doc);
 			nodes.push(node);
 		});
-		
-		if (!callback){
-			return nodes;
-		}
-		
+
 		callback(nodes);
 	});
 };
@@ -49,17 +45,14 @@ NodeRepository.prototype.findAll = function(callback) {
  * Add a new node
  * 
  * @param {Object} node The node object to save
- * @param {function()} [callback] Optional callback function
+ * @param {function()} [callback] Callback function
  * @api public
  */
 NodeRepository.prototype.add = function(node, callback) {
 	this.db.insert(node, function(err) {
 		if (err) {
 			console.log('error inserting document: ' + node);
-		}
-		
-		if (!callback) {
-			return;
+			callback(err);
 		}
 		
 		callback();
@@ -69,7 +62,7 @@ NodeRepository.prototype.add = function(node, callback) {
 /**
  * 
  * @param {Object} node The node to update
- * @param {function()} [callback] Optional callback function
+ * @param {function()} [callback] Callback function
  * @api public
  */
 NodeRepository.prototype.update = function(node, callback) {

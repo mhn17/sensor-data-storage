@@ -11,6 +11,7 @@ function Sensor(sensorDto) {
 	this.id = sensorDto.id;
 	this.captureInterval = sensorDto.captureInterval;
 	this.name = sensorDto.name;
+	this.dataType = sensorDto.dataType;
 }
 
 /**
@@ -38,6 +39,15 @@ Sensor.prototype.getName = function() {
  */
 Sensor.prototype.getCaptureInterval = function() {
 	return this.captureInterval;
+};
+
+/**
+ * Return the type of the data stored for the sensor
+ * 
+ * @returns {String}
+ */
+Sensor.prototype.getSensorData = function() {
+	return this.sensorData;
 };
 
 module.exports = Sensor;

@@ -15,7 +15,7 @@ var Sensor = require('./sensor');
 function Node(nodeDto) {
 	this._id = nodeDto._id;
 	this._rev = nodeDto._rev;
-	this.type = nodeDto.type;
+	this.type = nodeDto.type ? nodeDto : "node";
 	this.name = nodeDto.name;
 	this.url = nodeDto.url;
 	this.sensors = [];
