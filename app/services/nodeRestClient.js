@@ -80,7 +80,9 @@ NodeRestClient.prototype.deleteSensorData = function(nodeUrl, sensorDataId, call
 			console.log("Error deleting sensor data");
 		}
 
-		callback();
+		if (typeof callback !== "undefined") {
+			callback();
+		}
 	});
 };
 

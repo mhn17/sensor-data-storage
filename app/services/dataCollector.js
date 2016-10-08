@@ -77,28 +77,43 @@ DataCollector.prototype.updateSensors = function(callback) {
  * @api private
  */
 DataCollector.prototype.collectSensorData = function() {
-	var self = this;
+	if (this.collectingData === false) {
+		this.collectingData = true;
+	
+		var self = this;
 
-	// iterate over all nodes
-	async.each(this.nodes, function (node, callbackNodes) {
-		
-		// iterate over all sensors for a node
-		async.each(node.getSensors(), function(sensor, sensorsCallback) {
-			self.getAndSaveSensorData(node, sensor, sensorsCallback);
+		// iterate over all nodes
+		async.each(this.nodes, function (node, callbackNodes) {
+
+			// iterate over all sensors for a node
+			async.each(node.getSensors(), function (sensor, sensorsCallback) {
+				self.getAndSaveSensorData(node, sensor, sensorsCallback);
+			}, function (err) {
+				if (err) {
+					console.log('error: ' + err);
+				}
+
+				callbackNodes();
+			});
 		}, function (err) {
 			if (err) {
 				console.log('error: ' + err);
 			}
 			
-			callbackNodes();
+			this.collectingData = false;
 		});
-	}, function (err) {
-		if (err) {
-			console.log('error: ' + err);
-		}
-	});
+	
+	}
 };
 
+/**
+ * Get the sensor data from the node and store it in the database.
+ * 
+ * @param {Node} node
+ * @param {Sensor} sensor
+ * @param {function()} getAndSaveCallback Callback function
+ * @returns {undefined}
+ */
 DataCollector.prototype.getAndSaveSensorData = function(node, sensor, getAndSaveCallback) {
 	var limit = 20;
 	var offset = 0;
@@ -117,20 +132,21 @@ DataCollector.prototype.getAndSaveSensorData = function(node, sensor, getAndSave
 					self.sensorDataRepository.add(sensorDataModel, function(err) {
 						if (typeof err === "undefined") {
 							console.log("deleting remote sensor data: ", sensorDataModel.getId());
+							
+							// deleteSensorData without callback, just fire and forget
 							self.sensorNodeClient.deleteSensorData(
 								node.getUrl(), 
-								sensorDataModel.getId(),
-								sensorDataCallback
+								sensorDataModel.getId()
 							);
+						
+							sensorDataCallback();
 						} else {
-							sensorDataCallback(err);
+							console.log("error while adding sensor data: ", err);
+							sensorDataCallback();
 						}
 					});
-				}, function(err) {
-					if (err) {
-						console.log("error while adding sensor data: ", err);
-					}
-					
+				}, function() {
+					// get more sensor data from the node if there still exists some
 					self.getAndSaveSensorData(node, sensor, getAndSaveCallback);
 				});
 			} else {
@@ -138,6 +154,15 @@ DataCollector.prototype.getAndSaveSensorData = function(node, sensor, getAndSave
 			}
 		}
 	);
+};
+
+/**
+ * Return if it is currently busy collecting data
+ * 
+ * @returns {Boolean}
+ */
+DataCollector.prototype.isCollectingData = function() {
+	return this.collectingData;
 };
 
 /**
