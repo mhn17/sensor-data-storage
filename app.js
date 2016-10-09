@@ -1,5 +1,5 @@
 // app.js
-process.env.NODE_ENV = 'production';
+
 // REQUIRE AND CONSTRUCT ALL DEPENDENCIES
 //==============================================================================
 var schedule = require('node-schedule');
