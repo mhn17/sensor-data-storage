@@ -86,9 +86,10 @@ DataCollector.prototype.collectSensorData = function() {
 		async.each(this.nodes, function (node, callbackNodes) {
 
 			// iterate over all sensors for a node
-			async.each(node.getSensors(), function (sensor, sensorsCallback) {
-				self.getAndSaveSensorData(node, sensor, sensorsCallback);
+			async.each(node.getSensors(), function (sensor, callbackSensors) {
+				self.getAndSaveSensorData(node, sensor, callbackSensors);
 			}, function (err) {
+				console.log("finished importing sensor data");
 				if (err) {
 					console.log('error: ' + err);
 				}
@@ -100,7 +101,7 @@ DataCollector.prototype.collectSensorData = function() {
 				console.log('error: ' + err);
 			}
 			
-			this.collectingData = false;
+			self.collectingData = false;
 		});
 	
 	}
@@ -111,10 +112,10 @@ DataCollector.prototype.collectSensorData = function() {
  * 
  * @param {Node} node
  * @param {Sensor} sensor
- * @param {function()} getAndSaveCallback Callback function
+ * @param {function()} callbackGetAndSaveData Callback function
  * @returns {undefined}
  */
-DataCollector.prototype.getAndSaveSensorData = function(node, sensor, getAndSaveCallback) {
+DataCollector.prototype.getAndSaveSensorData = function(node, sensor, callbackGetAndSaveData) {	
 	var limit = 20;
 	var offset = 0;
 	var self = this;
@@ -122,7 +123,7 @@ DataCollector.prototype.getAndSaveSensorData = function(node, sensor, getAndSave
 	// get all data for a sensor
 	this.sensorNodeClient.getSensorData(node.getUrl(), sensor.getId(), offset, limit,
 		function (sensorData) {
-			// while there is still data on the node, repeat getting the data
+			// while there was still data on the node, add it to the database and try to get the rest
 			if (sensorData.length > 0) {
 				async.each(sensorData, function(sensorDataDto, sensorDataCallback) {
 					sensorDataDto._id = sensorDataDto.id;
@@ -136,21 +137,21 @@ DataCollector.prototype.getAndSaveSensorData = function(node, sensor, getAndSave
 							// deleteSensorData without callback, just fire and forget
 							self.sensorNodeClient.deleteSensorData(
 								node.getUrl(), 
-								sensorDataModel.getId()
+								sensorDataModel.getId(),
+								sensorDataCallback
 							);
-						
-							sensorDataCallback();
 						} else {
 							console.log("error while adding sensor data: ", err);
 							sensorDataCallback();
 						}
+
 					});
 				}, function() {
 					// get more sensor data from the node if there still exists some
-					self.getAndSaveSensorData(node, sensor, getAndSaveCallback);
+					self.getAndSaveSensorData(node, sensor, callbackGetAndSaveData);
 				});
 			} else {
-				getAndSaveCallback();
+				callbackGetAndSaveData();
 			}
 		}
 	);

@@ -9,7 +9,6 @@ var DataCollector = require('./app/services/dataCollector');
 var dbInit = new DbInit();
 var dataCollector = new DataCollector();
 
-
 // INITIALIZE DATABASE
 //==============================================================================
 dbInit.init(function() {
